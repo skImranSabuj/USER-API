@@ -15,7 +15,8 @@ const updateFile = (data) => {
 module.exports.getAllUsers = (req, res, next) => {
   const { limit } = req.query;
   console.log("limit:", limit);
-  res.json(users.slice(0, Number(limit)));
+  if (limit) res.json(users.slice(0, Number(limit)));
+  else res.json(users);
   //   res.json(users.slice(0, limit));
 };
 module.exports.getRandomUser = (req, res, next) => {
