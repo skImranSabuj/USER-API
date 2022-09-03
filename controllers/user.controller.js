@@ -1,11 +1,11 @@
-const { userData } = require("../public/user-data");
-
-let users = userData;
-
+// const { userData } = require("../public/user-data");
+const fs = require("fs");
+const { writeFile } = require("fs/promises");
+// let users = userData;
+let users = require("./userData.json");
 module.exports.getAllUsers = (req, res, next) => {
   const { limit, page } = req.query;
   console.log(limit, page);
-  //   undefined.test();
   res.json(users);
   //   res.json(users.slice(0, limit));
 };
@@ -20,10 +20,31 @@ module.exports.getRandomUser = (req, res, next) => {
   res.send(users[randomNumber]);
 };
 
-module.exports.saveAUser = (req, res) => {
+module.exports.saveAUser = async (req, res) => {
   console.log(req.query);
-  users.push(req.body);
-  res.send(users);
+  const newUser = req.body;
+  console.log("req.body:", newUser);
+  let tempData = [...users];
+  tempData.push(newUser);
+  let data = JSON.stringify(tempData);
+  console.log("tempData:", data);
+  console.log("__dirname:", `${__dirname}userData.json`);
+  await writeFile("./userData1.json", data, (err) => {
+    console.log("Opsss...", err);
+    // if (err) res.send("Failed to Update File");
+    // else res.json(tempData);
+    // res.end();
+  });
+  //   fs.writeFileSync("ss.txt", "habajaba");
+  fs.writeFile(`userData1.json`, data, (err) => {
+    //   fs.writeFile(`${__dirname}userData.json`, JSON.stringify(tempData), (err) => {
+    console.log("Opsss...", err);
+    if (err) res.send("Failed to Update File");
+    else res.json(tempData);
+    res.end();
+  });
+
+  //   users.push(req.body);
 };
 
 module.exports.getUserDetail = (req, res) => {

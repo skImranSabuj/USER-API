@@ -46,7 +46,7 @@ router
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admins can access the data
    */
-  .post(saveAUser);
+   router.route("/save").post(saveAUser);
 
 router.route("/random").get(getRandomUser).patch(updateUser).delete(deleteUser);
 
